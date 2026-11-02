@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,16 +18,20 @@
                 </div>
                 <div>
                     <h1 class="text-xl font-bold tracking-tight text-white">FundedNext Direct 50K Tracker</h1>
-                    <p class="text-xs text-slate-400">Futures Direct • Tradovate • 90% Reward Share</p>
+                    <p class="text-xs text-slate-400">Live Market Coach • Futures Direct • Tradovate • 90% Reward Share</p>
                 </div>
             </div>
             <div class="flex items-center gap-3">
-                <button onclick="resetData()" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg text-xs font-medium transition cursor-pointer">
-                    <i class="fa-solid fa-rotate-right mr-1.5"></i> Сбросить данные
+                <!-- Language Switcher Button -->
+                <button onclick="toggleLanguage()" id="langBtn" class="px-3 py-1.5 bg-indigo-500/10 hover:bg-indigo-500/20 text-indigo-400 border border-indigo-500/30 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-1.5">
+                    <i class="fa-solid fa-globe"></i> <span id="langBtnText">RU / EN</span>
+                </button>
+                <button onclick="resetData()" id="resetBtn" class="px-3 py-1.5 bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 border border-rose-500/30 rounded-lg text-xs font-medium transition cursor-pointer">
+                    <i class="fa-solid fa-rotate-right mr-1.5"></i> Reset Data
                 </button>
                 <div class="bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    Счёт Активен
+                    <span id="statusActiveText">Account Active</span>
                 </div>
             </div>
         </div>
@@ -41,43 +45,43 @@
             <!-- Account Balance -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
                 <div class="flex justify-between items-start text-slate-400 mb-2">
-                    <span class="text-xs font-medium uppercase tracking-wider">Баланс счёта</span>
+                    <span class="text-xs font-medium uppercase tracking-wider" data-i18n="lblBalance">Account Balance</span>
                     <i class="fa-solid fa-wallet text-slate-500"></i>
                 </div>
                 <div class="text-2xl font-bold text-white" id="statBalance">$50,000.00</div>
                 <div class="text-xs text-emerald-400 mt-1 flex items-center gap-1">
-                    <i class="fa-solid fa-arrow-trend-up"></i> <span id="statTotalProfit">+$0.00</span> общая прибыль
+                    <i class="fa-solid fa-arrow-trend-up"></i> <span id="statTotalProfit">+$0.00</span> <span data-i18n="lblTotalProfit">total profit</span>
                 </div>
             </div>
 
             <!-- Max Loss Limit -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
                 <div class="flex justify-between items-start text-slate-400 mb-2">
-                    <span class="text-xs font-medium uppercase tracking-wider">Макс. просадка (Max Loss)</span>
+                    <span class="text-xs font-medium uppercase tracking-wider" data-i18n="lblMaxLoss">Max Loss Limit</span>
                     <i class="fa-solid fa-shield-halved text-slate-500"></i>
                 </div>
                 <div class="text-2xl font-bold text-rose-400" id="statMaxLossLeft">$2,000.00</div>
-                <div class="text-xs text-slate-400 mt-1">Лимит убытка: $2,000 (EOD Trailing)</div>
+                <div class="text-xs text-slate-400 mt-1" data-i18n="lblMaxLossSub">Loss limit: $2,000 (EOD Trailing)</div>
             </div>
 
             <!-- Daily Loss Limit -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
                 <div class="flex justify-between items-start text-slate-400 mb-2">
-                    <span class="text-xs font-medium uppercase tracking-wider">Дневной лимит (Soft Breach)</span>
+                    <span class="text-xs font-medium uppercase tracking-wider" data-i18n="lblDailyLimit">Daily Loss Limit</span>
                     <i class="fa-solid fa-triangle-exclamation text-slate-500"></i>
                 </div>
                 <div class="text-2xl font-bold text-amber-400" id="statDailyLimit">$1,000.00</div>
-                <div class="text-xs text-slate-400 mt-1">Максимальный убыток за день</div>
+                <div class="text-xs text-slate-400 mt-1" data-i18n="lblDailyLimitSub">Max daily drawdown (Soft Breach)</div>
             </div>
 
             <!-- Consistency Status -->
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-lg">
                 <div class="flex justify-between items-start text-slate-400 mb-2">
-                    <span class="text-xs font-medium uppercase tracking-wider">Rule (20% Consistency)</span>
+                    <span class="text-xs font-medium uppercase tracking-wider" data-i18n="lblConsistencyRule">20% Consistency Rule</span>
                     <i class="fa-solid fa-scale-balanced text-slate-500"></i>
                 </div>
-                <div class="text-2xl font-bold text-emerald-400" id="statConsistencyStatus">Выполнено</div>
-                <div class="text-xs text-slate-400 mt-1" id="statConsistencySub">Лучший день &le; 20% от прибыли</div>
+                <div class="text-2xl font-bold text-emerald-400" id="statConsistencyStatus">Passed</div>
+                <div class="text-xs text-slate-400 mt-1" id="statConsistencySub" data-i18n="lblConsistencySub">Best day &le; 20% of profit</div>
             </div>
         </div>
 
@@ -89,25 +93,25 @@
                 <div>
                     <div class="flex justify-between items-center mb-4">
                         <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                            <i class="fa-solid fa-chart-pie text-indigo-400"></i> Анализ Perpetual Consistency Rule (20%)
+                            <i class="fa-solid fa-chart-pie text-indigo-400"></i> <span data-i18n="consTitle">Perpetual Consistency Rule Analysis (20%)</span>
                         </h2>
-                        <span id="consistencyBadge" class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">В норме</span>
+                        <span id="consistencyBadge" class="px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">Passed</span>
                     </div>
-                    <p class="text-xs text-slate-400 mb-6">
-                        Правило требует, чтобы ваш самый прибыльный день не составлял более 20% от общей суммы вашей прибыли. Это защищает от «азартных» перекосов в торговле.
+                    <p class="text-xs text-slate-400 mb-6" data-i18n="consDesc">
+                        This rule requires that your most profitable trading day does not exceed 20% of your total accumulated profit. This prevents gambling-like spikes in your performance.
                     </p>
 
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
                         <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl">
-                            <div class="text-xs text-slate-400 mb-1">Суммарная прибыль</div>
+                            <div class="text-xs text-slate-400 mb-1" data-i18n="boxTotalProfit">Total Profit</div>
                             <div class="text-lg font-bold text-white" id="consTotalProfit">$0.00</div>
                         </div>
                         <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl">
-                            <div class="text-xs text-slate-400 mb-1">Самый прибыльный день</div>
+                            <div class="text-xs text-slate-400 mb-1" data-i18n="boxBestDay">Best Trading Day</div>
                             <div class="text-lg font-bold text-emerald-400" id="consBestDay">$0.00</div>
                         </div>
                         <div class="bg-slate-950/60 border border-slate-800/80 p-4 rounded-xl">
-                            <div class="text-xs text-slate-400 mb-1">Доля лучшего дня</div>
+                            <div class="text-xs text-slate-400 mb-1" data-i18n="boxBestShare">Best Day Share</div>
                             <div class="text-lg font-bold text-indigo-400" id="consPercentage">0.0%</div>
                         </div>
                     </div>
@@ -116,8 +120,8 @@
                 <!-- Progress Bar -->
                 <div>
                     <div class="flex justify-between text-xs text-slate-400 mb-2">
-                        <span>Лимит лучшего дня (Макс. 20%)</span>
-                        <span id="consTargetText">Цель: 0% / 20%</span>
+                        <span data-i18n="consLimitText">Best Day Share Limit (Max 20%)</span>
+                        <span id="consTargetText">Target: 0% / 20%</span>
                     </div>
                     <div class="w-full bg-slate-950 rounded-full h-3 overflow-hidden border border-slate-800">
                         <div id="consProgressBar" class="bg-emerald-500 h-full transition-all duration-500" style="width: 0%"></div>
@@ -130,23 +134,23 @@
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
                 <div>
                     <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-calendar-plus text-emerald-400"></i> Добавить торговый день
+                        <i class="fa-solid fa-calendar-plus text-emerald-400"></i> <span data-i18n="formTitle">Add Trading Day</span>
                     </h2>
                     <form id="tradeForm" class="space-y-4">
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Дата</label>
+                            <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="labelDate">Date</label>
                             <input type="date" id="tradeDate" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Результат дня ($)</label>
-                            <input type="number" step="0.01" id="tradeProfit" placeholder="Например: 250 или -100" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                            <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="labelResult">Day Result ($)</label>
+                            <input type="number" step="0.01" id="tradeProfit" placeholder="e.g. 250 or -100" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Комментарий / Сделки</label>
-                            <input type="text" id="tradeNote" placeholder="Например: MNQ лонг на открытии NY" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
+                            <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="labelNotes">Notes / Setup</label>
+                            <input type="text" id="tradeNote" placeholder="e.g. MNQ long at NY open" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                         </div>
-                        <button type="submit" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-xl text-sm transition shadow-lg shadow-emerald-600/20 cursor-pointer">
-                            <i class="fa-solid fa-plus mr-1.5"></i> Добавить день
+                        <button type="submit" id="addDayBtn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-medium py-2.5 rounded-xl text-sm transition shadow-lg shadow-emerald-600/20 cursor-pointer">
+                            <i class="fa-solid fa-plus mr-1.5"></i> Add Day
                         </button>
                     </form>
                 </div>
@@ -161,28 +165,28 @@
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 lg:col-span-2">
                 <div class="flex justify-between items-center mb-4">
                     <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-                        <i class="fa-solid fa-list text-indigo-400"></i> История торговых дней
+                        <i class="fa-solid fa-list text-indigo-400"></i> <span data-i18n="historyTitle">Trading Days History</span>
                     </h2>
-                    <span class="text-xs text-slate-400" id="totalDaysCount">Всего дней: 0</span>
+                    <span class="text-xs text-slate-400" id="totalDaysCount">Total days: 0</span>
                 </div>
                 
                 <div class="overflow-x-auto">
                     <table class="w-full text-left border-collapse">
                         <thead>
                             <tr class="border-b border-slate-800 text-xs text-slate-400 uppercase tracking-wider">
-                                <th class="pb-3 font-medium">Дата</th>
-                                <th class="pb-3 font-medium">Результат</th>
-                                <th class="pb-3 font-medium">Баланс после</th>
-                                <th class="pb-3 font-medium">Заметки</th>
-                                <th class="pb-3 font-medium text-right">Действие</th>
+                                <th class="pb-3 font-medium" data-i18n="thDate">Date</th>
+                                <th class="pb-3 font-medium" data-i18n="thResult">Result</th>
+                                <th class="pb-3 font-medium" data-i18n="thBalance">Balance After</th>
+                                <th class="pb-3 font-medium" data-i18n="thNotes">Notes</th>
+                                <th class="pb-3 font-medium text-right" data-i18n="thAction">Action</th>
                             </tr>
                         </thead>
                         <tbody id="tradeTableBody" class="divide-y divide-slate-800/60 text-sm">
                             <!-- Populated via JS -->
                         </tbody>
                     </table>
-                    <div id="emptyTableState" class="text-center py-8 text-slate-500 text-sm">
-                        Пока нет записей. Добавьте свой первый торговый день выше.
+                    <div id="emptyTableState" class="text-center py-8 text-slate-500 text-sm" data-i18n="emptyTable">
+                        No records yet. Add your first trading day above.
                     </div>
                 </div>
             </div>
@@ -191,50 +195,50 @@
             <div class="bg-slate-900 border border-slate-800 rounded-2xl p-6 flex flex-col justify-between">
                 <div>
                     <h2 class="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> Запрос вывода (Payout)
+                        <i class="fa-solid fa-money-bill-transfer text-emerald-400"></i> <span data-i18n="payoutTitle">Payout Request</span>
                     </h2>
                     
                     <div class="bg-slate-950/60 border border-slate-800 p-4 rounded-xl mb-4 space-y-2 text-xs">
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Доступно к выводу:</span>
+                            <span class="text-slate-400" data-i18n="payoutAvailableLabel">Available to Payout:</span>
                             <span class="font-bold text-white" id="payoutAvailable">$0.00</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Максимум за 1 раз:</span>
+                            <span class="text-slate-400" data-i18n="payoutMaxLabel">Max per Payout:</span>
                             <span class="font-bold text-emerald-400">$1,200.00</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Условие дней:</span>
-                            <span class="font-bold text-amber-400" id="payoutDaysStatus">Мин. 5 дней (0 / 5)</span>
+                            <span class="text-slate-400" data-i18n="payoutDaysLabel">Days Condition:</span>
+                            <span class="font-bold text-amber-400" id="payoutDaysStatus">Min 5 days (0 / 5)</span>
                         </div>
                         <div class="flex justify-between">
-                            <span class="text-slate-400">Доля прибыли:</span>
-                            <span class="font-bold text-indigo-400">90% трейдер</span>
+                            <span class="text-slate-400" data-i18n="payoutShareLabel">Reward Share:</span>
+                            <span class="font-bold text-indigo-400" data-i18n="payoutShareVal">90% Trader</span>
                         </div>
                     </div>
 
                     <div class="space-y-3">
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Метод получения</label>
+                            <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="payoutMethodLabel">Payout Method</label>
                             <select id="payoutMethod" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                                 <option value="USDT">USDT (TRC20 / ERC20)</option>
                                 <option value="USDC">USDC (ERC20)</option>
                                 <option value="Rise">RiseWorks (Crypto / Bank)</option>
-                                <option value="Bank">Банковский перевод</option>
+                                <option value="Bank">Bank Transfer</option>
                             </select>
                         </div>
                         <div>
-                            <label class="block text-xs font-medium text-slate-400 mb-1">Адрес кошелька / реквизиты</label>
+                            <label class="block text-xs font-medium text-slate-400 mb-1" data-i18n="payoutWalletLabel">Wallet Address / Details</label>
                             <input type="text" id="payoutWallet" placeholder="TXxxxxxxxxxxxxxxxxxxxxxxxxxxx" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500 transition">
                         </div>
                     </div>
                 </div>
 
                 <div class="mt-6">
-                    <button onclick="requestPayout()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 cursor-pointer">
-                        <i class="fa-solid fa-paper-plane mr-1.5"></i> Запросить вывод средств
+                    <button onclick="requestPayout()" id="payoutBtn" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-medium py-2.5 rounded-xl text-sm transition shadow-lg shadow-indigo-600/20 cursor-pointer">
+                        <i class="fa-solid fa-paper-plane mr-1.5"></i> <span data-i18n="payoutBtnText">Request Payout</span>
                     </button>
-                    <p class="text-[11px] text-slate-500 text-center mt-2">Обработка в течение 24 часов после проверки правил.</p>
+                    <p class="text-[11px] text-slate-500 text-center mt-2" data-i18n="payoutFooter">Processing within 24 hours after rules verification.</p>
                 </div>
             </div>
 
@@ -244,13 +248,152 @@
 
     <!-- Footer -->
     <footer class="bg-slate-900 border-t border-slate-800 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>FundedNext Direct 50K Interactive Tracker • Разработано для профессионального контроля рисков и соблюдения правил consistency.</p>
+        <p data-i18n="footerText">FundedNext Direct 50K Interactive Tracker • Built for professional risk control and consistency rule compliance.</p>
     </footer>
 
-    <!-- JavaScript Application Logic -->
+    <!-- JavaScript Application Logic & Multilingual Support -->
     <script>
-        // Initial State or Load from LocalStorage
+        let currentLang = localStorage.getItem('fundednext_lang') || 'en';
         let trades = JSON.parse(localStorage.getItem('fundednext_trades')) || [];
+
+        // Dictionary for EN / RU translations
+        const translations = {
+            en: {
+                langBtnText: "RU / EN",
+                resetBtn: '<i class="fa-solid fa-rotate-right mr-1.5"></i> Reset Data',
+                statusActiveText: "Account Active",
+                lblBalance: "Account Balance",
+                lblTotalProfit: "total profit",
+                lblMaxLoss: "Max Loss Limit",
+                lblMaxLossSub: "Loss limit: $2,000 (EOD Trailing)",
+                lblDailyLimit: "Daily Loss Limit",
+                lblDailyLimitSub: "Max daily drawdown (Soft Breach)",
+                lblConsistencyRule: "20% Consistency Rule",
+                lblConsistencySub: "Best day &le; 20% of profit",
+                consTitle: "Perpetual Consistency Rule Analysis (20%)",
+                consDesc: "This rule requires that your most profitable trading day does not exceed 20% of your total accumulated profit. This prevents gambling-like spikes in your performance.",
+                boxTotalProfit: "Total Profit",
+                boxBestDay: "Best Trading Day",
+                boxBestShare: "Best Day Share",
+                consLimitText: "Best Day Share Limit (Max 20%)",
+                formTitle: "Add Trading Day",
+                labelDate: "Date",
+                labelResult: "Day Result ($)",
+                labelNotes: "Notes / Setup",
+                addDayBtn: '<i class="fa-solid fa-plus mr-1.5"></i> Add Day',
+                historyTitle: "Trading Days History",
+                thDate: "Date",
+                thResult: "Result",
+                thBalance: "Balance After",
+                thNotes: "Notes",
+                thAction: "Action",
+                emptyTable: "No records yet. Add your first trading day above.",
+                payoutTitle: "Payout Request",
+                payoutAvailableLabel: "Available to Payout:",
+                payoutMaxLabel: "Max per Payout:",
+                payoutDaysLabel: "Days Condition:",
+                payoutShareLabel: "Reward Share:",
+                payoutShareVal: "90% Trader",
+                payoutMethodLabel: "Payout Method",
+                payoutWalletLabel: "Wallet Address / Details",
+                payoutBtnText: "Request Payout",
+                payoutFooter: "Processing within 24 hours after rules verification.",
+                footerText: "FundedNext Direct 50K Interactive Tracker • Built for professional risk control and consistency rule compliance.",
+                statusPassed: "Passed",
+                statusViolation: "20% Violation",
+                statusWaiting: "Waiting",
+                badgePassed: "Passed",
+                badgeViolation: "Exceeded",
+                badgeWaiting: "Waiting",
+                confirmReset: "Are you sure you want to reset all trading history?",
+                alertNotEnoughDays: "Not enough trading days! FundedNext rule requires at least 5 trading days for payout.",
+                alertNoProfit: "There is no available profit on the account for payout.",
+                alertNoWallet: "Please enter your wallet address or payment details for the payout.",
+                alertSuccessPayout: (amt, method, wallet) => `Payout request of $${amt} via ${method} successfully submitted to FundedNext!\nAddress: ${wallet}`,
+                warningMsg: (best, needed) => `<i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Your best day ($${best}) exceeds 20%. You need to earn an additional <span class="text-white font-bold">$${needed}</span> on other days to comply with the rule.`,
+                totalDaysText: (count) => `Total days: ${count}`,
+                targetText: (perc) => `Target: ${perc}% / 20.0%`,
+                payoutDaysText: (count) => `Min 5 days (${count} / 5)`,
+                payoutDaysReady: (count) => `Min 5 days (${count} / 5) — Ready`
+            },
+            ru: {
+                langBtnText: "EN / RU",
+                resetBtn: '<i class="fa-solid fa-rotate-right mr-1.5"></i> Сбросить данные',
+                statusActiveText: "Счёт Активен",
+                lblBalance: "БАЛАНС СЧЁТА",
+                lblTotalProfit: "общая прибыль",
+                lblMaxLoss: "МАКС. ПРОСАДКА (MAX LOSS)",
+                lblMaxLossSub: "Лимит убытка: $2,000 (EOD Trailing)",
+                lblDailyLimit: "ДНЕВНОЙ ЛИМИТ (SOFT BREACH)",
+                lblDailyLimitSub: "Максимальный убыток за день",
+                lblConsistencyRule: "RULE (20% CONSISTENCY)",
+                lblConsistencySub: "Лучший день &le; 20% от прибыли",
+                consTitle: "Анализ Perpetual Consistency Rule (20%)",
+                consDesc: "Правило требует, чтобы ваш самый прибыльный день не составлял более 20% от общей суммы вашей прибыли. Это защищает от «азартных» перекосов в торговле.",
+                boxTotalProfit: "Суммарная прибыль",
+                boxBestDay: "Самый прибыльный день",
+                boxBestShare: "Доля лучшего дня",
+                consLimitText: "Лимит лучшего дня (Макс. 20%)",
+                formTitle: "Добавить торговый день",
+                labelDate: "Дата",
+                labelResult: "Результат дня ($)",
+                labelNotes: "Комментарий / Сделки",
+                addDayBtn: '<i class="fa-solid fa-plus mr-1.5"></i> Добавить день',
+                historyTitle: "История торговых дней",
+                thDate: "ДАТА",
+                thResult: "РЕЗУЛЬТАТ",
+                thBalance: "БАЛАНС ПОСЛЕ",
+                thNotes: "ЗАМЕТКИ",
+                thAction: "ДЕЙСТВИЕ",
+                emptyTable: "Пока нет записей. Добавьте свой первый торговый день выше.",
+                payoutTitle: "Запрос вывода (Payout)",
+                payoutAvailableLabel: "Доступно к выводу:",
+                payoutMaxLabel: "Максимум за 1 раз:",
+                payoutDaysLabel: "Условие дней:",
+                payoutShareLabel: "Доля прибыли:",
+                payoutShareVal: "90% трейдер",
+                payoutMethodLabel: "Метод получения",
+                payoutWalletLabel: "Адрес кошелька / реквизиты",
+                payoutBtnText: "Запросить вывод средств",
+                payoutFooter: "Обработка в течение 24 часов после проверки правил.",
+                footerText: "FundedNext Direct 50K Interactive Tracker • Разработано для профессионального контроля рисков и соблюдения правил consistency.",
+                statusPassed: "Выполнено",
+                statusViolation: "Нарушение 20%",
+                statusWaiting: "Ожидание",
+                badgePassed: "Выполнено",
+                badgeViolation: "Превышение",
+                badgeWaiting: "Ожидание",
+                confirmReset: "Вы уверены, что хотите сбросить всю историю торгов?",
+                alertNotEnoughDays: "Недостаточно торговых дней! Правило FundedNext требует минимум 5 торговых дней для вывода.",
+                alertNoProfit: "На счете нет доступной прибыли для вывода.",
+                alertNoWallet: "Пожалуйста, укажите реквизиты или адрес кошелька для выплаты.",
+                alertSuccessPayout: (amt, method, wallet) => `Запрос на выплату $${amt} через ${method} успешно отправлен в систему FundedNext!\nАдрес: ${wallet}`,
+                warningMsg: (best, needed) => `<i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Ваш лучший день ($${best}) превышает 20%. Нужно заработать ещё <span class="text-white font-bold">$${needed}</span> в другие дни, чтобы выполнить правило.`,
+                totalDaysText: (count) => `Всего дней: ${count}`,
+                targetText: (perc) => `Цель: ${perc}% / 20.0%`,
+                payoutDaysText: (count) => `Мин. 5 дней (${count} / 5)`,
+                payoutDaysReady: (count) => `Мин. 5 дней (${count} / 5) — Готово`
+            }
+        };
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ru' : 'en';
+            localStorage.setItem('fundednext_lang', currentLang);
+            updateTexts();
+            renderDashboard();
+        }
+
+        function updateTexts() {
+            const t = translations[currentLang];
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (t[key]) el.textContent = t[key];
+            });
+            document.getElementById('resetBtn').innerHTML = t.resetBtn;
+            document.getElementById('addDayBtn').innerHTML = t.addDayBtn;
+            document.getElementById('payoutBtn').innerHTML = t.payoutBtnText;
+            document.getElementById('langBtnText').textContent = currentLang === 'en' ? 'RU / EN' : 'EN / RU';
+        }
 
         // Set today's date by default
         document.getElementById('tradeDate').valueAsDate = new Date();
@@ -278,7 +421,8 @@
         }
 
         function resetData() {
-            if (confirm('Вы уверены, что хотите сбросить всю историю торгов?')) {
+            const t = translations[currentLang];
+            if (confirm(t.confirmReset)) {
                 trades = [];
                 saveAndRender();
             }
@@ -290,15 +434,14 @@
         }
 
         function renderDashboard() {
+            const t = translations[currentLang];
             const tableBody = document.getElementById('tradeTableBody');
             const emptyState = document.getElementById('emptyTableState');
             tableBody.innerHTML = '';
 
-            let currentBalance = 50000;
-            let totalProfit = 0;
-            let bestDay = 0;
-            let maxLossLeftVal = 2000;
-            let currentDayMaxLoss = 1000;
+            let netProfit = trades.reduce((acc, curr) => acc + curr.profit, 0);
+            let absoluteProfitOnly = trades.reduce((acc, curr) => curr.profit > 0 ? acc + curr.profit : acc, 0);
+            let bestDay = trades.reduce((max, curr) => curr.profit > max ? curr.profit : max, 0);
 
             if (trades.length === 0) {
                 emptyState.classList.remove('hidden');
@@ -306,40 +449,22 @@
                 emptyState.classList.add('hidden');
             }
 
-            let runningBalance = 50000;
-
-            trades.forEach(t => {
-                runningBalance += t.profit;
-                if (t.profit > bestDay) {
-                    bestDay = t.profit;
-                }
-                if (t.profit > 0) {
-                    totalProfit += t.profit;
-                } else {
-                    totalProfit += t.profit; // including negative
-                }
-            });
-
-            // Calculate overall net profit (sum of all positive/negative)
-            let netProfit = trades.reduce((acc, curr) => acc + curr.profit, 0);
-            let absoluteProfitOnly = trades.reduce((acc, curr) => curr.profit > 0 ? acc + curr.profit : acc, 0);
-
             // Render table rows
             let tempBalance = 50000;
-            trades.forEach(t => {
-                tempBalance += t.profit;
-                const isProfit = t.profit >= 0;
+            trades.forEach(tr => {
+                tempBalance += tr.profit;
+                const isProfit = tr.profit >= 0;
                 const row = document.createElement('tr');
                 row.className = "hover:bg-slate-900/50 transition";
                 row.innerHTML = `
-                    <td class="py-3 pr-4 text-slate-300">${t.date}</td>
+                    <td class="py-3 pr-4 text-slate-300">${tr.date}</td>
                     <td class="py-3 pr-4 font-semibold ${isProfit ? 'text-emerald-400' : 'text-rose-400'}">
-                        ${isProfit ? '+' : ''}$${t.profit.toFixed(2)}
+                        ${isProfit ? '+' : ''}$${tr.profit.toFixed(2)}
                     </td>
                     <td class="py-3 pr-4 text-white font-medium">$${tempBalance.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                    <td class="py-3 pr-4 text-slate-400 text-xs">${t.note || '—'}</td>
+                    <td class="py-3 pr-4 text-slate-400 text-xs">${tr.note || '—'}</td>
                     <td class="py-3 text-right">
-                        <button onclick="deleteTrade(${t.id})" class="text-slate-500 hover:text-rose-400 transition cursor-pointer p-1">
+                        <button onclick="deleteTrade(${tr.id})" class="text-slate-500 hover:text-rose-400 transition cursor-pointer p-1">
                             <i class="fa-solid fa-trash-can text-xs"></i>
                         </button>
                     </td>
@@ -354,89 +479,89 @@
             profitEl.textContent = `${netProfit >= 0 ? '+' : ''}$${netProfit.toFixed(2)}`;
             profitEl.className = netProfit >= 0 ? "text-xs text-emerald-400 mt-1 flex items-center gap-1" : "text-xs text-rose-400 mt-1 flex items-center gap-1";
 
-            // Consistency Rule Calculations (Rule: Best day <= 20% of total positive profit)
+            // Consistency Rule Calculations
             let consistencyPercentage = absoluteProfitOnly > 0 ? (bestDay / absoluteProfitOnly) * 100 : 0;
             if (absoluteProfitOnly === 0) consistencyPercentage = 0;
 
             document.getElementById('consTotalProfit').textContent = `$${absoluteProfitOnly.toFixed(2)}`;
             document.getElementById('consBestDay').textContent = `$${bestDay.toFixed(2)}`;
             document.getElementById('consPercentage').textContent = `${consistencyPercentage.toFixed(1)}%`;
-            document.getElementById('consTargetText').textContent = `Цель: ${consistencyPercentage.toFixed(1)}% / 20.0%`;
+            document.getElementById('consTargetText').textContent = t.targetText(consistencyPercentage.toFixed(1));
 
             const progressBar = document.getElementById('consProgressBar');
-            const progressWidth = Math.min(consistencyPercentage * 5, 100); // 20% = 100% width of bar
+            const progressWidth = Math.min(consistencyPercentage * 5, 100);
             progressBar.style.width = `${progressWidth}%`;
 
             const badge = document.getElementById('consistencyBadge');
             const statusText = document.getElementById('statConsistencyStatus');
-            const statusSub = document.getElementById('statConsistencySub');
             const warningMsg = document.getElementById('consWarningMessage');
 
             if (absoluteProfitOnly === 0) {
                 badge.className = "px-2.5 py-1 rounded-full text-xs font-medium bg-slate-800 text-slate-300 border border-slate-700";
-                badge.textContent = "Ожидание";
-                statusText.textContent = "Ожидание";
+                badge.textContent = t.badgeWaiting;
+                statusText.textContent = t.statusWaiting;
                 statusText.className = "text-2xl font-bold text-slate-300";
                 progressBar.className = "bg-slate-600 h-full transition-all duration-500";
                 warningMsg.classList.add('hidden');
             } else if (consistencyPercentage <= 20) {
                 badge.className = "px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-500/10 text-emerald-400 border border-emerald-500/20";
-                badge.textContent = "Выполнено";
-                statusText.textContent = "Выполнено";
+                badge.textContent = t.badgePassed;
+                statusText.textContent = t.statusPassed;
                 statusText.className = "text-2xl font-bold text-emerald-400";
                 progressBar.className = "bg-emerald-500 h-full transition-all duration-500";
                 warningMsg.classList.add('hidden');
             } else {
                 badge.className = "px-2.5 py-1 rounded-full text-xs font-medium bg-amber-500/10 text-amber-400 border border-amber-500/20";
-                badge.textContent = "Превышение";
-                statusText.textContent = "Нарушение 20%";
+                badge.textContent = t.badgeViolation;
+                statusText.textContent = t.statusViolation;
                 statusText.className = "text-2xl font-bold text-amber-400";
                 progressBar.className = "bg-amber-500 h-full transition-all duration-500";
                 
-                // Calculate required total profit to fix
                 let requiredTotal = bestDay / 0.20;
                 let neededMore = requiredTotal - absoluteProfitOnly;
                 warningMsg.classList.remove('hidden');
-                warningMsg.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400 mr-1"></i> Ваш лучший день ($${bestDay.toFixed(2)}) превышает 20%. Нужно заработать ещё <span class="text-white font-bold">$${neededMore.toFixed(2)}</span> в другие дни, чтобы выполнить правило.`;
+                warningMsg.innerHTML = t.warningMsg(bestDay.toFixed(2), neededMore.toFixed(2));
             }
 
             // Payout Section updates
             document.getElementById('payoutAvailable').textContent = `$${Math.max(0, netProfit).toFixed(2)}`;
-            document.getElementById('totalDaysCount').textContent = `Всего дней: ${trades.length}`;
+            document.getElementById('totalDaysCount').textContent = t.totalDaysText(trades.length);
             
             const daysCount = trades.length;
             const payoutDaysStatus = document.getElementById('payoutDaysStatus');
             if (daysCount >= 5) {
-                payoutDaysStatus.textContent = `Мин. 5 дней (${daysCount} / 5) — Готово`;
+                payoutDaysStatus.textContent = t.payoutDaysReady(daysCount);
                 payoutDaysStatus.className = "font-bold text-emerald-400";
             } else {
-                payoutDaysStatus.textContent = `Мин. 5 дней (${daysCount} / 5)`;
+                payoutDaysStatus.textContent = t.payoutDaysText(daysCount);
                 payoutDaysStatus.className = "font-bold text-amber-400";
             }
         }
 
         function requestPayout() {
+            const t = translations[currentLang];
             const wallet = document.getElementById('payoutWallet').value;
             const method = document.getElementById('payoutMethod').value;
             let netProfit = trades.reduce((acc, curr) => acc + curr.profit, 0);
 
             if (trades.length < 5) {
-                alert('Недостаточно торговых дней! Правило FundedNext требует минимум 5 торговых дней для вывода.');
+                alert(t.alertNotEnoughDays);
                 return;
             }
             if (netProfit <= 0) {
-                alert('На счете нет доступной прибыли для вывода.');
+                alert(t.alertNoProfit);
                 return;
             }
             if (!wallet) {
-                alert('Пожалуйста, укажите реквизиты или адрес кошелька для выплаты.');
+                alert(t.alertNoWallet);
                 return;
             }
 
-            alert(`Запрос на выплату $${Math.min(netProfit, 1200).toFixed(2)} через ${method} успешно отправлен в систему FundedNext!\nАдрес: ${wallet}`);
+            alert(t.alertSuccessPayout(Math.min(netProfit, 1200).toFixed(2), method, wallet));
         }
 
-        // Initial render on load
+        // Initial setup
+        updateTexts();
         renderDashboard();
     </script>
 </body>
